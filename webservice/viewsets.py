@@ -21,6 +21,7 @@ from tables.models import Table
 from tables.serializers import TableSerializer
 from user_management.models import AtlasGroup, AtlasUser
 from webservice.exceptions import ProtectedDeleteError
+from webservice.filters import NullsLastTimestampOrderingFilter
 from webservice.mixins import DataExportImportMixin, DuplicateMixin, DeleteMixin, FileUploadMixin
 from webservice.permissions import IsAdminOrReadOnly
 from webservice.util import get_settings, process_value
@@ -35,7 +36,7 @@ from .serializers import CategorySerializer, DrawingSerializer, GroupSerializer,
 
 class MapViewSet(DataExportImportMixin, FileUploadMixin, DuplicateMixin, DeleteMixin, viewsets.ModelViewSet):
     serializer_class = MapSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, MultipleFieldsFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, MultipleFieldsFilter, NullsLastTimestampOrderingFilter]
     multiple_lookup_fields = ['published', 'show_in_overview', 'is_main']
 
     search_fields = ['title', 'description', 'keywords', 'about']
@@ -127,7 +128,7 @@ class SourceViewSet(DataExportImportMixin, DuplicateMixin, DeleteMixin, viewsets
     permission_classes = [permissions.IsAdminUser]
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, NullsLastTimestampOrderingFilter]
 
     search_fields = ['title']
 
@@ -137,7 +138,7 @@ class LayerViewSet(DataExportImportMixin, DuplicateMixin, DeleteMixin, viewsets.
 
     search_fields = ['title']
 
-    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter, MultipleFieldsFilter]
+    filter_backends = [SearchFilter, DjangoFilterBackend, NullsLastTimestampOrderingFilter, MultipleFieldsFilter]
     multiple_lookup_fields = ['layer_source', 'layer_type']
 
     def get_serializer_class(self):
@@ -168,7 +169,7 @@ class CategoriesViewSet(DataExportImportMixin, DuplicateMixin, DeleteMixin, view
     queryset = Category.objects.select_related('parent').all()
     serializer_class = CategorySerializer
 
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, NullsLastTimestampOrderingFilter]
 
     search_fields = ['title']
 
@@ -208,7 +209,7 @@ class UsersViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = AtlasUser.objects.all()
     serializer_class = UserSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, MultipleFieldsFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, MultipleFieldsFilter, NullsLastTimestampOrderingFilter]
 
     search_fields = ['username', 'email', 'first_name', 'last_name', 'name']
     multiple_lookup_fields = ['atlas_groups']
@@ -226,7 +227,7 @@ class GroupsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = AtlasGroup.objects.all().order_by('name')
     serializer_class = GroupSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, NullsLastTimestampOrderingFilter]
 
     search_fields = ['name']
 
@@ -234,7 +235,7 @@ class GroupsViewSet(viewsets.ModelViewSet):
 class MetadatasetViewSet(viewsets.ModelViewSet, DataExportImportMixin, DuplicateMixin, DeleteMixin):
     http_method_names = ['get', 'post', 'patch', 'delete', 'options']
     serializer_class = MetadatasetSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, MultipleFieldsFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, MultipleFieldsFilter, NullsLastTimestampOrderingFilter]
     multiple_lookup_fields = ['topic_category', 'status', 'show_in_overview']
     search_fields = ['title', 'abstract', 'keyword']
 
@@ -287,7 +288,7 @@ class ViewerViewSet(DataExportImportMixin, DuplicateMixin, DeleteMixin, viewsets
 
     search_fields = ['label']
 
-    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filter_backends = [SearchFilter, DjangoFilterBackend, NullsLastTimestampOrderingFilter]
 
 
 class TableViewSet(DataExportImportMixin, DeleteMixin, viewsets.ModelViewSet):
@@ -296,7 +297,7 @@ class TableViewSet(DataExportImportMixin, DeleteMixin, viewsets.ModelViewSet):
 
     search_fields = ['title', 'description']
 
-    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filter_backends = [SearchFilter, DjangoFilterBackend, NullsLastTimestampOrderingFilter]
     permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):

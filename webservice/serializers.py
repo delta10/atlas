@@ -77,7 +77,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'title', 'slug', 'ordering', 'parent', 'parent_id', 'full_title']
+        fields = ['id', 'title', 'slug', 'ordering', 'parent', 'parent_id', 'full_title', 'created_at', 'updated_at']
 
 
 class MapCategorySerializer(serializers.ModelSerializer):
@@ -94,7 +94,7 @@ class MapSerializer(serializers.ModelSerializer):
         model = Map
         fields = ['id', 'title', 'slug', 'features', 'settings', 'layers', 'categories', 'thumbnail', 'description',
                   'keywords',
-                  'published', 'show_in_overview', 'about', 'about_title', 'is_main']
+                  'published', 'show_in_overview', 'about', 'about_title', 'is_main', 'created_at', 'updated_at']
         read_only_fields = ['is_main']
 
     def __init__(self, *args, **kwargs):
@@ -209,7 +209,7 @@ class MapSerializer(serializers.ModelSerializer):
 class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
-        fields = ['id', 'title', 'slug', 'url', 'authenticate', 'source_type', 'atlas_groups', 'login_required']
+        fields = ['id', 'title', 'slug', 'url', 'authenticate', 'source_type', 'atlas_groups', 'login_required', 'created_at', 'updated_at']
 
 
 class LinkedDataSerializer(serializers.ModelSerializer):
@@ -355,6 +355,8 @@ class MetadatasetNestedSerializer(serializers.ModelSerializer):
             'meta_organization',
             'meta_email_person_responsible',
             'meta_role_person_responsible',
+            'created_at',
+            'updated_at',
         ]
 
 
@@ -722,7 +724,9 @@ class LayerListSerializer(serializers.ModelSerializer):
             'ordering',
             'login_required',
             'closed_dataset',
-            'metadataset'
+            'metadataset',
+            'created_at',
+            'updated_at',
         ]
 
 
@@ -735,7 +739,7 @@ class DrawingSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = AtlasGroup
-        fields = ['id', 'name', 'slug', 'external_id']
+        fields = ['id', 'name', 'slug', 'external_id', 'created_at', 'updated_at']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -744,14 +748,14 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AtlasUser
         fields = ['id', 'username', 'name', 'email', 'is_staff', 'is_active',
-                  'is_superuser', 'atlas_groups', 'external_id', 'date_joined', 'last_login']
+                  'is_superuser', 'atlas_groups', 'external_id', 'date_joined', 'last_login', 'updated_at']
 
 
 class UserCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = AtlasUser
         fields = ['id', 'username', 'name', 'email', 'is_staff', 'is_active',
-                  'is_superuser', 'atlas_groups', 'external_id', 'date_joined', 'last_login']
+                  'is_superuser', 'atlas_groups', 'external_id', 'date_joined', 'last_login', 'updated_at']
 
 
 class DataExportSettingsSerializer(serializers.Serializer):
@@ -804,7 +808,7 @@ class ViewerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Viewer
         fields = ['ordering', 'label', 'type', 'username', 'password', 'api_key', 'url', 'is_oblique', 'internal', 'id',
-                  'type', 'title']
+                  'type', 'title', 'created_at', 'updated_at']
 
 
 class LogSerializer(serializers.ModelSerializer):
