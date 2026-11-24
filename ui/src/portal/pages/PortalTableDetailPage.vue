@@ -200,11 +200,9 @@ const extractTemplateParams = (v: unknown): string[] => {
 
   for (const block of blocks) {
     const expr = block.slice(2, -2).trim();
-    // capture first "root" identifier in the expression
-    // examples:
-    // postcode.replaceAll(...)   -> postcode
-    // postcode | replace(' ', '') -> postcode
-    // (postcode ?? '')           -> postcode
+    // A Liquid expression starts with its property path. Filters do not
+    // change which value is needed for the search.
+    // Example: postcode | replace: ' ', '' -> postcode
     const m = expr.match(/[A-Za-z_$][\w$]*/);
     if (m) parameters.add(m[0]);
   }
